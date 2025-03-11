@@ -19,11 +19,11 @@ function Account() {
   const { token, setToken, setUser, user, setHighScore } =
     useContext(AuthContext);
   const [formData, setFormData] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    userId: "johndoe",
-    bio: "Senior Software Engineer passionate about building great products.",
-    score: 10,
+    name: "User Name",
+    email: "user@example.com",
+    userId: "user1245",
+    bio: "bio",
+    score: 0,
     avatar:
       "https://res.cloudinary.com/dojqjc99q/image/upload/v1741285039/FlashGame_DEV/avatars/g0ek3r5sld6uwl1pxowt.png",
   });

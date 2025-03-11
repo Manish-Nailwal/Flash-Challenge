@@ -5,7 +5,7 @@ import {
   MessageSquareText,
   ChevronRight,
 } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import OtherProducts from "../components/OtherProducts";
 function Home() {
   return (
@@ -28,9 +28,10 @@ function Home() {
               Play Free Now
               <ChevronRight className="ml-2 h-5 w-5" />
             </NavLink>
-            <button className="bg-transparent border-2 border-gray-900 hover:border-gray-800 hover:bg-gray-900  px-8 py-3 rounded-lg font-medium transition-colors">
-              Learn To Play
-            </button>
+            <Link to={'/about'} className="bg-transparent border-2 border-gray-900 hover:border-gray-800 hover:bg-gray-900  px-8 py-3 rounded-lg font-medium transition-colors flex items-center justify-center">
+              Know More
+              <ChevronRight className="ml-2 h-5 w-5" />
+            </Link>
           </div>
         </div>
         <div className="md:w-1/2">

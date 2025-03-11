@@ -3,6 +3,7 @@ import "./Play.css";
 import { AuthContext } from "../context/AuthContext";
 import { backend } from "../App";
 import axios from "axios";
+import { toast } from "react-toastify";
 function Play() {
   const colors = ["red", "yellow", "green", "blue"];
   const [start, setStart] = useState(false);
@@ -14,7 +15,8 @@ function Play() {
   const [gameStatus, setGameStatus] = useState(false);
   const [restart, setRestart] = useState(false);
 
-  const { token, setToken, user, setUser, highScore, setHighScore } = useContext(AuthContext);
+  const { token, setToken, user, setUser, highScore, setHighScore } =
+    useContext(AuthContext);
 
   useEffect(() => {
     const checkToken = async () => {
@@ -76,11 +78,20 @@ function Play() {
     } else {
       setCurrQueue([]);
       setGameStatus(false);
+      if (highScore < currLvl){
+        if(!localStorage.getItem("token")&&highScore>0){
+          toast.info("New high score! Log in or register to save it.")
+        }else{
+          toast.error("Game Over!!")
+        }
+      }else{
+        toast.error("Game Over!!")
+      }
     }
   };
 
   const btnPress = async (e) => {
-    if (start) {
+    if (start && gameStatus) {
       setUserQueue([...userQueue, colors[e.target.id]]);
       setRandIdx(e.target.id);
       setTimeout(function () {
@@ -98,7 +109,9 @@ function Play() {
           score: highScore,
         });
         setUser(res.data.user)
+        return false
       }
+      return true
     }
   };
 

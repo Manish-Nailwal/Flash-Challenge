@@ -11,7 +11,7 @@ function SignUp() {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { token, setToken } = useContext(AuthContext);
+  const { token, setToken, highScore } = useContext(AuthContext);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -28,12 +28,12 @@ function SignUp() {
         name,
         userId,
         password,
+        score: highScore
       },
       {
         withCredentials: true,
       }
     );
-    console.log(response);
     if (response.data.success) {
       toast.success(response.data.message);
       localStorage.setItem("token", response.data.token);
