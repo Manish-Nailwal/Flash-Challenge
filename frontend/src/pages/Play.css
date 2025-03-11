@@ -1,0 +1,35 @@
+
+.color-box{
+    display: flex;
+    border: solid #fff;
+    height: fit-content;
+    width: fit-content;
+    padding: 0 1rem;
+    border-radius: 20px;
+    justify-content: center;
+}
+.color{
+    height: 8rem;
+    width: 8rem;
+    margin: 1rem 0.5rem;
+    border-radius: 20%;
+    border: solid white 0.12rem;
+}
+.red{
+    background-color: #d95980;
+}
+.yellow{
+    background-color: #f99b45;
+}
+.green{
+    background-color: #63aac0;
+}
+.blue{
+    background-color: #815ff9;
+}
+.flash{
+    background-color: #fff;
+}
+.invisible{
+    visibility:hidden;
+}
