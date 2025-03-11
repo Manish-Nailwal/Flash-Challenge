@@ -36,7 +36,6 @@ function Login() {
 
     if (response.data.success) {
       toast.success(response.data.message);
-      console.log(response.data.token);
       localStorage.setItem("token", response.data.token);
       setToken(response.data.token)
       setTimeout(() => {
