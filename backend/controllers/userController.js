@@ -117,7 +117,7 @@ const getScore = async (req, res) => {
 const updateScore = async (req, res) => {
   const { userId, score } = req.body;
 
-  const user = await User.findById({ userId });
+  const user = await User.findById( userId );
   if (score > user.score) {
     user.score = score;
     await user.save();
