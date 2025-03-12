@@ -25,7 +25,7 @@ function News() {
           </p>
         </div>
 
-        <div className=" gap-8 flex items-start justify-start md:px-44 pb-10 flex-wrap">
+        <div className=" gap-8 flex items-start justify-center md:justify-start md:px-44 pb-10 flex-wrap">
           {news.reverse().map((item, index) => (
             <div
               key={index}
