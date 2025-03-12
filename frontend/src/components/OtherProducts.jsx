@@ -9,7 +9,7 @@ function OtherProducts() {
           <Link to={"https://wander-lust-o5es.onrender.com"}>
             <div className="relative inline-block rounded-lg shadow-lg hover:opacity-80 transition-opacity">
               <img
-                src="/media/otherProj/StaynQuest.png"
+                src="https://res.cloudinary.com/dojqjc99q/image/upload/v1741774388/FlashGame_DEV/products/aeckckpvuv08uebptai0.png"
                 alt="WanderLust"
                 className="rounded-lg shadow-lg hover:opacity-80 transition-opacity"
               />
@@ -21,7 +21,7 @@ function OtherProducts() {
           <Link to={"https://fundraising-portal.onrender.com"}>
             <div className="relative inline-block rounded-lg shadow-lg hover:opacity-80 transition-opacity">
               <img
-                src="/media/otherProj/CauseConnect.png"
+                src="https://res.cloudinary.com/dojqjc99q/image/upload/v1741774388/FlashGame_DEV/products/iy3k8nbdgk01nd1majgy.png"
                 alt="FundRaiser"
                 className="rounded-lg shadow-lg hover:opacity-80 transition-opacity"
               />
@@ -33,7 +33,7 @@ function OtherProducts() {
           <Link to={"https://temptrendz.netlify.app/"}>
             <div className="relative inline-block rounded-lg shadow-lg hover:opacity-80 transition-opacity">
               <img
-                src="/media/otherProj/TempTrendz.png"
+                src="https://res.cloudinary.com/dojqjc99q/image/upload/v1741774388/FlashGame_DEV/products/wvtqcrdy5tpoj3n9kr6y.png"
                 alt="WeatherApp"
                 className="rounded-lg shadow-lg hover:opacity-80 transition-opacity"
               />
