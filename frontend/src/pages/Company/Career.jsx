@@ -11,7 +11,7 @@ function Career() {
           </p>
         </div>
 
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <div className=" shadow-md rounded-lg overflow-hidden">
             <div className="p-6 border-b border-gray-200">
               <h2 className="text-2xl font-semibold text-white mb-4">
