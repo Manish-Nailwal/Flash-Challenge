@@ -1,99 +1,105 @@
 # Flash Challenge
 
-Flash Challenge is an engaging memory game designed to challenge your cognitive skills. Players must memorize and replicate a series of increasingly complex flash sequences. The objective is to test your memory and concentration while having fun. As the game progresses, the sequences become more difficult, pushing your skills to the limit. Can you keep up with the flashing lights and master the challenge?
+Flash Challenge is an engaging memory game that tests your cognitive skills. Players must memorize and replicate increasingly complex sequences of flashing lights. As the game progresses, the sequences become more difficult, pushing your memory and concentration to the limit. Can you master the challenge?
 
 ## Live Demo
 
 Play the game here: [Flash Challenge Live Demo](https://flash-challenge.netlify.app/)
 
-## Version v0.0.2
+## Version v0.1.0
 
-### New Features in v0.0.2:
+### New Features in v0.1.0:
 
-- **Basic game setup**: Establishes the foundational gameplay mechanics, creating a seamless user experience.
-- **User authentication**: Implements a secure login and registration system to save your progress and create personalized gameplay experiences.
-- **Toast notifications**: Informative and responsive messages to give players better feedback during gameplay.
-- **About page**: Offers insights about the game’s concept and details about the development team.
-- **Homepage**: The main entry point for accessing the game.
-- **Navbar**: Improves navigation and allows easy access to different sections of the app.
+- **Bug Fixes**:
+  - Resolved issues with user authentication, enhancing login and registration stability.
+  - Fixed account session bugs to ensure users remain logged in consistently.
+  
+- **Improved User Experience**:
+  - Added more toast notifications for clearer player feedback and understanding.
+  - Enhanced notification messages to guide users more effectively during gameplay.
+
+- **New Pages**:
+  - Introduced new **Company**, **Legal**, and **Support** pages, providing key information to users.
+  - These pages ensure players have access to important details, legal disclaimers, and support options.
+
+- **Footer Enhancements**:
+  - All footer links are now fully functional, providing seamless navigation to relevant sections, including **About**, **Legal**, and **Support**.
 
 ## Features
 
-- **Challenging Gameplay**: Memorize and replicate complex sequences of flashing lights. The challenge increases as you advance.
-- **User Authentication**: Secure login and registration system for saving game progress and creating personalized player experiences.
-- **Feedback Notifications**: Toast notifications to keep the player informed about their actions during the game.
-- **Informative About Page**: Learn about the game’s concept and the development team.
-- **Smooth Navigation**: Easy-to-use navigation bar for quick access to all sections of the app.
+- **Challenging Gameplay**: Memorize and replicate flashing sequences that grow increasingly complex as you advance.
+- **User Authentication**: Secure login and registration system for saving progress and personalizing gameplay.
+- **Feedback Notifications**: Toast notifications provide real-time feedback to keep players informed during gameplay.
+- **Informative Pages**: Access the **Company**, **Legal**, and **Support** sections for important details and assistance.
+- **Responsive Footer Links**: Fully functional footer links for easy navigation to key sections like **About**, **Legal**, and **Support**.
 
 ## Installation
 
-To run the project locally, follow the steps below:
+To run the project locally, follow these steps:
 
 ### Prerequisites
 
-- Make sure you have **Node.js** installed. You can download it from [nodejs.org](https://nodejs.org/).
+- Ensure that **Node.js** is installed on your machine. You can download it from [nodejs.org](https://nodejs.org/).
 
 ### Steps
 
-1.  Clone the repository to your local machine:
+1. Clone the repository:
 
     ```bash
     git clone https://github.com/Manish-Nailwal/Flash-Challenge.git
     ```
 
-- Navigate into the project directory:
+2. Navigate into the project directory:
 
-  ```bash
-  cd flash-challenge
-  ```
+    ```bash
+    cd flash-challenge
+    ```
 
-2.  Install the required dependencies using npm:
+3. Install dependencies:
 
     ```bash
     npm install
-
     ```
 
-3.  Run the development server:
+4. Run the development server:
 
     ```bash
     npm run dev
-
     ```
 
-4.  Open your browser and go to http://localhost:5173 to play the game locally.
+5. Open your browser and visit http://localhost:5173 to play the game locally.
 
 ### Technologies Used
 
 - **Frontend**: React.js, HTML, CSS, React-vite
-- **Backend**: MongoDB, NodeJS, ExpressJS
-- **Authentication**: JWT
-- **Deployment**: Netlify for hosting the live demo && Render for deployement of Server
+- **Backend**: MongoDB, Node.js, Express.js
+- **Authentication**: JWT (JSON Web Tokens)
+- **Deployment**: Netlify (for live demo) and Render (for server deployment)
 
 ### Contributing
 
-We welcome contributions to improve Flash Challenge! If you want to contribute, please follow the steps below:
+We welcome contributions! If you'd like to help improve Flash Challenge, please follow these steps:
 
-1. Fork the repository
-2. Create a new branch with a descriptive name
-3. Make your changes or add new features
-4. Commit your changes
-5. Push your changes to your forked repository
-6. Create a pull request describing the changes you’ve made
+1. Fork the repository.
+2. Create a new branch with a descriptive name.
+3. Make your changes or add features.
+4. Commit your changes.
+5. Push your changes to your fork.
+6. Create a pull request detailing the changes you've made.
 
 ### Guidelines
 
-- Follow the code style used in the project.
+- Follow the project’s code style.
 - Write clear, concise commit messages.
-- Test your changes where applicable.
+- Test your changes when possible.
 
 ### License
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is licensed under the MIT License. See the LICENSE file for details.
 
 ## Acknowledgments
 
 - **React.js**: For building the user interface.
-- **React Vite**: ReactJS Framework.
-- **JWT** : For secure authentication.
-- **Toast Notifications**: To enhance the user experience by providing instant feedback.
+- **React Vite**: React framework for fast development.
+- **JWT**: For secure user authentication.
+- **Toast Notifications**: To enhance user experience with immediate feedback.

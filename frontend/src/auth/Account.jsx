@@ -32,7 +32,7 @@ function Account() {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (localStorage.getItem("token") != "") {
+      if (localStorage.getItem("token")) {
         try {
           const response = await axios.post(`${backend}/api/user/verify`, {
             token: localStorage.getItem("token"),
@@ -49,9 +49,16 @@ function Account() {
             });
           } else {
             toast.error(response.data.message);
+            localStorage.removeItem("token");
+            navigate('/login')
           }
         } catch (error) {
+          if(error.message=="Network Error"){
+          toast.info("The server is starting. Please try again later.");
+          navigate('/')
+          }else{
           toast.error(error.message);
+          }
         }
       } else {
         toast.error(
@@ -81,8 +88,9 @@ function Account() {
   };
 
   const logout = () => {
-    if (token != "") {
+    if (localStorage.getItem("token")) {
       localStorage.removeItem("token");
+      toast.success('Logged out successfully.')
     }
     setToken("");
     setHighScore(0);
@@ -114,19 +122,19 @@ function Account() {
 
           {/* Content */}
           <div className="pt-16 px-8 pb-8">
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex justify-between items-start md:items-center mb-8">
               <h1 className="text-3xl font-bold text-white">{formData.name}</h1>
               <div className="m-0 p-0 flex flex-col md:flex-row items-center justify-end">
                 <button
                   // onClick={() => setIsEditing(!isEditing)}
                   onClick={handleSubmit}
-                  className="px-4 my-2 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="w-20 px-4 my-2 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                  {isEditing ? "Cancel" : "Edit Profile"}
+                  {isEditing ? "Cancel" : "Edit"}
                 </button>
                 <button
                   onClick={logout}
-                  className="ms-5 my-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="md:ms-5 my-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   {localStorage.getItem("token") != "" ? "LogOut" : "LogIn"}
                 </button>

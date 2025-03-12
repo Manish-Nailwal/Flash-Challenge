@@ -2,7 +2,7 @@ import { Gamepad2, User } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify";
 
 function Navbar() {
   const { token, setToken, user, setUser } = useContext(AuthContext);
@@ -18,6 +18,9 @@ function Navbar() {
       );
       navigate("/login");
     }
+  };
+  const inform = () => {
+    toast.info("Coming in the next release!");
   };
 
   return (
@@ -41,18 +44,18 @@ function Navbar() {
           >
             About
           </NavLink>
-          <NavLink
-            to={"/features"}
+          <button
+            onClick={inform}
             className="hover:text-indigo-300 transition-colors"
           >
             Features
-          </NavLink>
-          <NavLink
-            to={"/community"}
+          </button>
+          <button
+            onClick={inform}
             className="hover:text-indigo-300 transition-colors"
           >
             Community
-          </NavLink>
+          </button>
         </div>
         <div className="flex flex-row items-center">
           <button className=" hover:bg-gray-900 px-5 py-2 rounded-full font-medium transition-colors">

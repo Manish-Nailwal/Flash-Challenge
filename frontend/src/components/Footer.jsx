@@ -1,7 +1,10 @@
-import { Gamepad2, Github, Twitter, Instagram } from "lucide-react";
-import { NavLink } from "react-router-dom";
-
+import { Gamepad2, Github, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Link, NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
 function Footer() {
+  const inform = () => {
+    toast.info("Coming in the next release!");
+  };
   return (
     <>
       <footer className="bg-gray-950 py-12">
@@ -32,7 +35,7 @@ function Footer() {
                   </li>
                   <li>
                     <NavLink
-                      to={"/career"}
+                      to={"/careers"}
                       className="hover:text-white transition-colors"
                     >
                       Careers
@@ -60,12 +63,12 @@ function Footer() {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink
-                      to={"/community"}
+                    <button
+                      onClick={inform}
                       className="hover:text-white transition-colors"
                     >
                       Community
-                    </NavLink>
+                    </button>
                   </li>
                   <li>
                     <NavLink
@@ -113,24 +116,30 @@ function Footer() {
               © 2025 FLASH CHALLENGE. All rights reserved.
             </p>
             <div className="flex space-x-6">
-              <a
-                href="#"
+              <Link
+                to={'https://x.com/ManishNailwal_'}
                 className="text-indigo-400 hover:text-white transition-colors"
               >
                 <Twitter className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to={'https://www.linkedin.com/in/manish-nailwal/'}
+                className="text-indigo-400 hover:text-white transition-colors"
+              >
+                <Linkedin className="h-5 w-5" />
+              </Link>
+              <Link
+                to={"https://www.instagram.com/manishnailwal_/"}
                 className="text-indigo-400 hover:text-white transition-colors"
               >
                 <Instagram className="h-5 w-5" />
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to={"https://github.com/Manish-Nailwal/Flash-Challenge"}
                 className="text-indigo-400 hover:text-white transition-colors"
               >
                 <Github className="h-5 w-5" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>

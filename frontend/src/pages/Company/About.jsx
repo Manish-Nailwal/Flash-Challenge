@@ -1,5 +1,5 @@
 import { Telescope, BrainCircuit, Zap, Target } from "lucide-react";
-import OtherProducts from "../components/OtherProducts";
+import OtherProducts from "../../components/OtherProducts";
 function About() {
   return (
     <>

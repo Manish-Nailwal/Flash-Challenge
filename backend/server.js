@@ -4,6 +4,7 @@ import "dotenv/config";
 import connectDB from './config/mongoDb.js'
 import connectCloudinary from "./config/cloudinary.js";
 import userRouter from "./routes/userRoutes.js";
+import newsRouter from "./routes/newsRoute.js";
 
 // App Config
 const app = express();
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
   res.send("Hello I am there");
 });
 app.use('/api/user',userRouter);
+app.use('/api/news',newsRouter);
 
 app.listen(port, () => {
   console.log("listening at port: " + port);
