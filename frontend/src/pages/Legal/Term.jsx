@@ -9,7 +9,7 @@ function Term() {
           <h1 className="mt-4 text-3xl font-bold text-white">
             Terms of Service
           </h1>
-          <p className="mt-2 text-lg text-gray-500">Last updated: March 2024</p>
+          <p className="mt-2 text-lg text-gray-500">Last updated: March 2025</p>
         </div>
 
         <div className="prose max-w-6xl mx-auto">
