@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import { toast } from "react-toastify";
 
 function Navbar() {
-  const { token, setToken, user, setUser } = useContext(AuthContext);
+  const { setToken } = useContext(AuthContext);
   const navigate = useNavigate();
   const profile = async () => {
     if (localStorage.getItem("token")) {

@@ -11,14 +11,14 @@ function Login() {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { token, setToken, highScore } = useContext(AuthContext);
+  const { token, setToken, highScore, questProgress, setQuestProgress, setClaimReward } = useContext(AuthContext);
 
-  useEffect(()=>{
-    if(localStorage.getItem("token")){
-      toast.info("You are already logged in.")
-      navigate('/account')
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      toast.info("You are already logged in.");
+      navigate("/account");
     }
-  },[])
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +27,8 @@ function Login() {
       {
         userId,
         password,
-        score: highScore
+        score: highScore,
+        progress: questProgress,
       },
       {
         withCredentials: true,
@@ -37,7 +38,9 @@ function Login() {
     if (response.data.success) {
       toast.success(response.data.message);
       localStorage.setItem("token", response.data.token);
-      setToken(response.data.token)
+      setClaimReward([...response.data.user.claim])
+      setQuestProgress([...response.data.user.progress])
+      setToken(response.data.token);
       setTimeout(() => {
         navigate("/account");
       }, 1500);

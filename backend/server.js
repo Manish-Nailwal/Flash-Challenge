@@ -5,6 +5,7 @@ import connectDB from './config/mongoDb.js'
 import connectCloudinary from "./config/cloudinary.js";
 import userRouter from "./routes/userRoutes.js";
 import newsRouter from "./routes/newsRoute.js";
+import questRouter from "./routes/questRoute.js";
 
 // App Config
 const app = express();
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 });
 app.use('/api/user',userRouter);
 app.use('/api/news',newsRouter);
+app.use('/api/quest',questRouter);
 
 app.listen(port, () => {
   console.log("listening at port: " + port);

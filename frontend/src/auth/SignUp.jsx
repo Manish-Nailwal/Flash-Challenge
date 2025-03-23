@@ -11,7 +11,7 @@ function SignUp() {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { token, setToken, highScore } = useContext(AuthContext);
+  const { setToken, highScore, claimReward, questProgress, key } = useContext(AuthContext);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -28,7 +28,10 @@ function SignUp() {
         name,
         userId,
         password,
-        score: highScore
+        score: highScore,
+        progress: questProgress,
+        claim: claimReward,
+        key
       },
       {
         withCredentials: true,

@@ -20,7 +20,6 @@ const userAuth = async (req, res) => {
     }
     res.json({
       success: true,
-      message: `Welcome Back ${user.name}`,
       user,
     });
   } catch (error) {

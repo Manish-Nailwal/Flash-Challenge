@@ -3,14 +3,46 @@ import bcrypt from "bcrypt";
 import validator from "validator";
 import jwt from "jsonwebtoken";
 
+let checkfn = (name, userId, password, res) => {
+  if (name != "") {
+    if (userId != "") {
+      if (!password.length > 0) {
+        res.json({
+          success: false,
+          message: "password is req",
+        });
+      }
+    } else {
+      res.json({
+        success: false,
+        message: "userId is req",
+      });
+    }
+  } else {
+    res.json({
+      success: false,
+      message: "name is req",
+    });
+  }
+};
+
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET);
+};
+
+const checkProgress = (prev, curr) => {
+  for (let idx = 0; idx < prev.length; idx++) {
+    if (prev[idx] < curr[idx]) {
+      return true;
+    }
+  }
+  return false;
 };
 
 // login
 const login = async (req, res) => {
   try {
-    const { userId, password, score } = req.body;
+    const { userId, password, score, progress } = req.body;
     const user = await User.findOne({ userId });
 
     if (!user) {
@@ -25,12 +57,17 @@ const login = async (req, res) => {
       const token = createToken(user._id);
       if (user.score < score) {
         user.score = score;
-        await user.save();
       }
+      if (checkProgress(user.progress, progress)) {
+        user.progress = [...progress];
+      }
+
+      await user.save();
       return res.json({
         success: true,
         message: "Logged In Successfully",
         token,
+        user,
       });
     }
     return res.json({
@@ -47,7 +84,7 @@ const login = async (req, res) => {
 
 //register
 const register = async (req, res) => {
-  const { name, userId, password, score } = req.body;
+  const { name, userId, password, score, progress, claim, key } = req.body;
   checkfn(name, userId, password, res);
   try {
     //checking for existing user
@@ -81,7 +118,15 @@ const register = async (req, res) => {
 
     // create new user
 
-    const newUser = new User({ name, userId, password: hashpassword, score });
+    const newUser = new User({
+      name,
+      userId,
+      password: hashpassword,
+      score,
+      progress,
+      claim,
+      key,
+    });
     const user = await newUser.save();
     const token = createToken(user._id);
 
@@ -117,7 +162,7 @@ const getScore = async (req, res) => {
 const updateScore = async (req, res) => {
   const { userId, score } = req.body;
 
-  const user = await User.findById( userId );
+  const user = await User.findById(userId);
   if (score > user.score) {
     user.score = score;
     await user.save();
@@ -129,27 +174,43 @@ const updateScore = async (req, res) => {
   });
 };
 
-export { login, register, getScore, updateScore };
+const updateUser = async (req, res) => {
+  const { userId, data, prevId } = req.body;
 
-let checkfn = (name, userId, password, res) => {
-  if (name != "") {
-    if (userId != "") {
-      if (!password.length > 0) {
-        res.json({
-          success: false,
-          message: "password is req",
-        });
-      }
-    } else {
-      res.json({
+  if (!validator.isEmail(data.email)) {
+    if(data.email!=""){
+      return res.json({
         success: false,
-        message: "userId is req",
+        message: "Your email is not valid!!",
       });
     }
-  } else {
-    res.json({
-      success: false,
-      message: "name is req",
-    });
+  }
+  try {
+    if (prevId != data.userId) {
+      const tempUser = await User.findOne({ userId: data.userId });
+      if(tempUser){
+        return res.json({ success: false, message: "User already exist with this id" });
+      }
+    }
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.json({ success: false, message: "User does not Exist" });
+    }
+    user.name=data.name;
+    user.email=data.email;
+    user.userId=data.userId;
+    user.bio=data.bio;
+    user.avatar=data.avatar;
+
+    await user.save();
+    return res.json({
+      success: true,
+      message: "User Updated Successfully",
+      user
+    })
+  } catch (error) {
+    console.log(error)
   }
 };
+
+export { login, register, getScore, updateScore, updateUser };

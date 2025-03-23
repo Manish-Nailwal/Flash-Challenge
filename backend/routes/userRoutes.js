@@ -5,6 +5,7 @@ import {
   login,
   register,
   updateScore,
+  updateUser,
 } from "../controllers/userController.js";
 import userAuth from "../middleware/userAuth.js";
 
@@ -15,6 +16,7 @@ userRouter.post("/login", login);
 userRouter.post("/register", register);
 userRouter.post("/score", updateScore);
 userRouter.get("/score", getScore);
-userRouter.post("/verify", userAuth)
+userRouter.post("/verify", userAuth);
+userRouter.post("/update", updateUser);
 
 export default userRouter;
