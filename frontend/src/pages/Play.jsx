@@ -1,9 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import "./Play.css";
 import { AuthContext } from "../context/AuthContext";
-import { backend } from "../App";
-import axios from "axios";
-import { toast } from "react-toastify";
+import DailyQuestPopup from "../components/DailyQuestPopup";
+import { checkToken, getQuestFn } from "../util/util";
+import {
+  btnPressFn,
+  checkBtnFn,
+  isHighScoreFn,
+  lvlUpFn,
+  startGameFn,
+} from "../util/gameUtil";
 function Play() {
   const colors = ["red", "yellow", "green", "blue"];
   const [start, setStart] = useState(false);
@@ -14,52 +20,50 @@ function Play() {
   const [randIdx, setRandIdx] = useState(-1);
   const [gameStatus, setGameStatus] = useState(false);
   const [restart, setRestart] = useState(false);
+  const [popUp, setPopUp] = useState(false);
 
-  const { token, setToken, user, setUser, highScore, setHighScore } =
-    useContext(AuthContext);
+  const {
+    token,
+    setToken,
+    user,
+    setUser,
+    highScore,
+    setHighScore,
+    quest,
+    setQuest,
+    questProgress,
+    setQuestProgress
+  } = useContext(AuthContext);
 
   useEffect(() => {
-    const checkToken = async () => {
-      if (localStorage.getItem("token")) {
-        try {
-          const response = await axios.post(`${backend}/api/user/verify`, {
-            token: localStorage.getItem("token"),
-          });
-          if (response.data.success) {
-            setUser(response.data.user);
-            setToken(localStorage.getItem("token"));
-          } else {
-            localStorage.removeItem("token");
-            setToken("");
-          }
-        } catch (error) {}
-      }
-    };
-    checkToken();
+    checkToken(setToken, setUser);
+    getQuestFn(setQuest);
   }, []);
 
-  const lvlUp = async () => {
-    setUserQueue([]);
-    setCurrLvl(currLvl + 1);
-    setCurrScore(currLvl);
-    isHighScore();
-    let idx = Math.floor(Math.random() * 4);
-    setRandIdx(idx);
-    setCurrQueue([...currQueue, colors[idx]]);
-    setTimeout(function () {
-      setRandIdx(-1);
-    }, 150);
-  };
-
   const startGame = () => {
-    if (token != "" && user.score > 0) {
-      setHighScore(user.score);
-    }
-    setCurrLvl(0);
-    setStart(true);
-    setCurrScore(0);
-    setGameStatus(true);
-    setTimeout(lvlUp, 500);
+    startGameFn(
+      token,
+      user,
+      setHighScore,
+      setCurrLvl,
+      setStart,
+      setCurrScore,
+      setGameStatus,
+      lvlUp
+    );
+  };
+  const lvlUp = () => {
+    lvlUpFn(
+      currLvl,
+      setCurrLvl,
+      setCurrScore,
+      isHighScore,
+      currQueue,
+      setCurrQueue,
+      setRandIdx,
+      colors,
+      setUserQueue
+    );
   };
 
   const reStartGame = () => {
@@ -69,50 +73,36 @@ function Play() {
   };
 
   const checkBtn = (idx) => {
-    if (currQueue[idx] == userQueue[idx]) {
-      if (currQueue.length == userQueue.length) {
-        setTimeout(() => {
-          lvlUp();
-        }, 500);
-      }
-    } else {
-      setCurrQueue([]);
-      setGameStatus(false);
-      if (highScore < currLvl){
-        if(!localStorage.getItem("token")&&highScore>0){
-          toast.info("New high score! Log in or register to save it.")
-        }else{
-          toast.error("Game Over!!")
-        }
-      }else{
-        toast.error("Game Over!!")
-      }
-    }
+    checkBtnFn(
+      idx,
+      currQueue,
+      userQueue,
+      lvlUp,
+      setCurrQueue,
+      setGameStatus,
+      highScore,
+      currLvl,
+      quest,
+      currScore,
+      questProgress,
+      setQuestProgress
+    );
   };
 
-  const btnPress = async (e) => {
-    if (start && gameStatus) {
-      setUserQueue([...userQueue, colors[e.target.id]]);
-      setRandIdx(e.target.id);
-      setTimeout(function () {
-        setRandIdx(-1);
-      }, 150);
-    }
+  const btnPress = (e) => {
+    btnPressFn(
+      e,
+      start,
+      gameStatus,
+      userQueue,
+      setUserQueue,
+      colors,
+      setRandIdx
+    );
   };
 
-  const isHighScore = async () => {
-    if (highScore < currLvl) {
-      setHighScore(currLvl);
-      if (token != "") {
-        const res = await axios.post(`${backend}/api/user/score`, {
-          userId: user._id,
-          score: highScore,
-        });
-        setUser(res.data.user)
-        return false
-      }
-      return true
-    }
+  const isHighScore = () => {
+    isHighScoreFn(highScore, currLvl, setHighScore, token, user, setUser);
   };
 
   useEffect(() => {
@@ -120,7 +110,7 @@ function Play() {
       setUserQueue([]);
       setCurrQueue([]);
       setRestart(false);
-      startGame;
+      startGame();
     }
   }, [restart]);
 
@@ -129,6 +119,11 @@ function Play() {
       checkBtn(userQueue.length - 1);
     }
   }, [userQueue]);
+
+  // Daily Quest Setup
+  const togglePopup = () => {
+    setPopUp(!popUp);
+  };
   return (
     <>
       <section className="container mx-auto px-4 py-20 flex flex-col md:flex-row items-center justify-around mt-0">
@@ -159,50 +154,78 @@ function Play() {
           </div>
         </div>
         <div className="box-2 mt-8 text-center">
-          {start ? (
-            <div className="mt-3 w-60">
-              {gameStatus ? (
-                <h2 className="text-2xl font-semibold text-center">
-                  Level {currLvl}
-                </h2>
-              ) : (
-                <>
+          <div className="flex flex-col justify-center">
+            {start ? (
+              <>
+                {gameStatus ? (
                   <h2 className="text-2xl font-semibold text-center">
-                    Game Over!
+                    Level {currLvl}
                   </h2>
-                  <h2 className="text-lg font-semibold text-center">
-                    Previous Score: {currScore}
-                  </h2>
-                </>
-              )}
-              <span className="flex flex-row justify-between mt-5 text-lg">
-                <p className="text-left">Current Score</p>
-                <p>{currScore}</p>
-              </span>
-              <span className="flex flex-row justify-between mt-1 text-lg">
-                <p className="text-left">Highest Score</p>
-                <p>{highScore}</p>
-              </span>
-              <button
-                onClick={reStartGame}
-                className="bg-gray-800 hover:bg-gray-900 w-60 text-white px-8 py-2 rounded-md font-medium transition-colors mt-5"
-              >
-                Restart
-              </button>
-            </div>
-          ) : (
-            <>
-              <h1 className="text-2xl font-semibold">Play Simon Says Game</h1>
-              <button
-                onClick={startGame}
-                className="bg-gray-800 hover:bg-gray-900  text-white px-8 py-2 rounded-full font-medium transition-colors mt-8"
-              >
-                Click to Start
-              </button>
-            </>
-          )}
+                ) : (
+                  <>
+                    <h2 className="text-2xl font-semibold text-center">
+                      Game Over!
+                    </h2>
+                    <h2 className="text-lg font-semibold text-center">
+                      Previous Score: {currScore}
+                    </h2>
+                  </>
+                )}
+                {/* {
+                  gameStatus ? <span className="flex flex-row justify-between mt-5 text-lg">
+                  <p className="text-left">Current Score</p>
+                  <p>{currScore}</p>
+                </span>: null
+                } */}
+                <span className="flex flex-row justify-between mt-5 text-lg">
+                  <p className="text-left">Current Score</p>
+                  <p>{currScore}</p>
+                </span>
+                <span className="flex flex-row justify-between mt-1 text-lg">
+                  <p className="text-left">Highest Score</p>
+                  <p>{highScore}</p>
+                </span>
+                <div className="flex flex-row justify-between">
+                  <button
+                    onClick={reStartGame}
+                    // className="bg-gray-800 hover:bg-gray-900 w-60 text-white px-8 py-2 rounded-md font-medium transition-colors mt-5"
+                    className="bg-gray-800 hover:bg-gray-900  text-white px-8 py-2 rounded-lg font-medium transition-colors mt-8 w-36 me-8"
+                  >
+                    Restart
+                  </button>
+                  <button
+                    onClick={togglePopup}
+                    className="bg-gray-800 hover:bg-gray-900  text-white px-8 py-2 rounded-lg font-medium transition-colors mt-8 "
+                  >
+                    Daily Quest
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <h1 className="text-2xl font-semibold ">
+                  Get Ready for Flash Challenge
+                </h1>
+                <div className="flex flex-row justify-between">
+                  <button
+                    onClick={startGame}
+                    className="bg-gray-800 hover:bg-gray-900  text-white px-8 py-2 rounded-lg font-medium transition-colors mt-8"
+                  >
+                    Click to Start
+                  </button>
+                  <button
+                    onClick={togglePopup}
+                    className="bg-gray-800 hover:bg-gray-900  text-white px-8 py-2 rounded-lg font-medium transition-colors mt-8"
+                  >
+                    Daily Quest
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </section>
+      {popUp ? <DailyQuestPopup togglePopup={togglePopup} /> : null}
     </>
   );
 }

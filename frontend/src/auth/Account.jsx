@@ -9,15 +9,12 @@ import {
   Target,
   LogIn,
 } from "lucide-react";
-import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext";
-import axios from "axios";
-import { backend } from "../App";
+import { fetchUserData, handleInputChange, handleSubmit, logout, setEditFn } from "../util/authUtil";
 
 function Account() {
   const [isEditing, setIsEditing] = useState(false);
-  const { token, setToken, setUser, user, setHighScore } =
-    useContext(AuthContext);
+  const { setToken, setUser, user, setHighScore, setKey, setQuestProgress, setClaimReward } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     name: "User Name",
     email: "user@example.com",
@@ -27,77 +24,14 @@ function Account() {
     avatar:
       "https://res.cloudinary.com/dojqjc99q/image/upload/v1741285039/FlashGame_DEV/avatars/g0ek3r5sld6uwl1pxowt.png",
   });
+  const [tempFormData, setTempFormData] = useState({});
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (localStorage.getItem("token")) {
-        try {
-          const response = await axios.post(`${backend}/api/user/verify`, {
-            token: localStorage.getItem("token"),
-          });
-          setUser(response.data.user);
-          if (response.data.success) {
-            setFormData({
-              name: response.data.user.name,
-              email: response.data.user.email,
-              userId: response.data.user.userId,
-              bio: response.data.user.bio,
-              score: response.data.user.score,
-              avatar: response.data.user.avatar,
-            });
-          } else {
-            toast.error(response.data.message);
-            localStorage.removeItem("token");
-            navigate('/login')
-          }
-        } catch (error) {
-          if(error.message=="Network Error"){
-          toast.info("The server is starting. Please try again later.");
-          navigate('/')
-          }else{
-          toast.error(error.message);
-          }
-        }
-      } else {
-        toast.error(
-          "Oops! Looks like you're not logged in. Please log in to continue."
-        );
-        navigate("/login");
-      }
-    };
-
-    fetchUserData();
+    fetchUserData(setUser, setFormData, navigate);
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    toast.info("Editing Profile is currently not available");
-    // Handle save logic here
-    // console.log("Saving profile:", formData);
-    // setIsEditing(false);
-  };
-
-  const logout = () => {
-    if (localStorage.getItem("token")) {
-      localStorage.removeItem("token");
-      toast.success('Logged out successfully.')
-    }
-    setToken("");
-    setHighScore(0);
-    setTimeout(() => {
-      navigate("/login");
-    }, 500);
-  };
   return (
     <div className="min-h-screen bg-black">
       <div className="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
@@ -126,14 +60,13 @@ function Account() {
               <h1 className="text-3xl font-bold text-white">{formData.name}</h1>
               <div className="m-0 p-0 flex flex-col md:flex-row items-center justify-end">
                 <button
-                  // onClick={() => setIsEditing(!isEditing)}
-                  onClick={handleSubmit}
+                  onClick={() => setEditFn(tempFormData, setTempFormData, formData, setFormData, isEditing, setIsEditing)}
                   className="w-20 px-4 my-2 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   {isEditing ? "Cancel" : "Edit"}
                 </button>
                 <button
-                  onClick={logout}
+                  onClick={() => logout(setQuestProgress, setClaimReward, setKey, setToken, setHighScore, navigate)}
                   className="md:ms-5 my-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   {localStorage.getItem("token") != "" ? "LogOut" : "LogIn"}
@@ -141,7 +74,7 @@ function Account() {
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={(e)=>handleSubmit(e,setIsEditing, isEditing, formData, tempFormData, user, setUser)} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Basic Information */}
                 <div className="space-y-4">
@@ -157,7 +90,7 @@ function Account() {
                         type="text"
                         name="name"
                         value={formData.name}
-                        onChange={handleInputChange}
+                        onChange={(e) => handleInputChange(e, setFormData)}
                         disabled={!isEditing}
                         className="block w-full pl-10 pr-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                       />
@@ -176,7 +109,7 @@ function Account() {
                         type="email"
                         name="email"
                         value={formData.email}
-                        onChange={handleInputChange}
+                        onChange={(e) => handleInputChange(e, setFormData)}
                         disabled={!isEditing}
                         placeholder="your@mail.com"
                         className="block w-full pl-10 pr-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
@@ -199,7 +132,7 @@ function Account() {
                         type="text"
                         name="userId"
                         value={formData.userId}
-                        onChange={handleInputChange}
+                        onChange={(e) => handleInputChange(e, setFormData)}
                         disabled={!isEditing}
                         className="block w-full pl-10 pr-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                       />
@@ -216,8 +149,8 @@ function Account() {
                       <input
                         type="text"
                         value={formData.score}
-                        onChange={handleInputChange}
-                        disabled={!isEditing}
+                        onChange={(e) => handleInputChange(e, setFormData)}
+                        disabled={true}
                         className="block w-full pl-10 pr-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
                       />
                     </div>
@@ -235,7 +168,7 @@ function Account() {
                     name="bio"
                     rows={4}
                     value={formData.bio}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange(e, setFormData)}
                     placeholder="bio"
                     disabled={true}
                     className="block w-full px-3 py-2 text-gray-800 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-50 disabled:text-gray-500"
