@@ -19,12 +19,17 @@ import Contact from "./pages/Support/Contact";
 import Privacy from "./pages/Legal/Privacy";
 import Term from "./pages/Legal/Term";
 import Cookies from "./pages/Legal/Cookies";
+import Community from "./pages/Support/Community";
+import Features from "./pages/Features";
+import Blitz from "./components/Play/Blitz";
+import Normal from "./components/Play/Normal";
+import Leaderboard from "./pages/LeaderBoard";
 
 const backend = import.meta.env.VITE_BACKEND_URI;
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-gray-600 text-white">
+    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900  text-white">
       <Navbar />
       <ToastContainer />
       <main className="flex-grow">
@@ -42,6 +47,11 @@ function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Term />} />
           <Route path="/cookies" element={<Cookies />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/play/blitz" element={<Blitz />} />
+          <Route path="/play/normal" element={<Normal />} />
+          <Route path="/top-flashers" element={<Leaderboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

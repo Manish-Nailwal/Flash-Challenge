@@ -54,6 +54,8 @@ const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (isMatch) {
+      user.resetDaily();
+      await user.save();
       const token = createToken(user._id);
       if (user.score < score) {
         user.score = score;
@@ -178,7 +180,7 @@ const updateUser = async (req, res) => {
   const { userId, data, prevId } = req.body;
 
   if (!validator.isEmail(data.email)) {
-    if(data.email!=""){
+    if (data.email != "") {
       return res.json({
         success: false,
         message: "Your email is not valid!!",
@@ -188,29 +190,47 @@ const updateUser = async (req, res) => {
   try {
     if (prevId != data.userId) {
       const tempUser = await User.findOne({ userId: data.userId });
-      if(tempUser){
-        return res.json({ success: false, message: "User already exist with this id" });
+      if (tempUser) {
+        return res.json({
+          success: false,
+          message: "User already exist with this id",
+        });
       }
     }
     const user = await User.findById(userId);
     if (!user) {
       return res.json({ success: false, message: "User does not Exist" });
     }
-    user.name=data.name;
-    user.email=data.email;
-    user.userId=data.userId;
-    user.bio=data.bio;
-    user.avatar=data.avatar;
+    user.name = data.name;
+    user.email = data.email;
+    user.userId = data.userId;
+    user.bio = data.bio;
+    user.avatar = data.avatar;
 
     await user.save();
     return res.json({
       success: true,
       message: "User Updated Successfully",
-      user
-    })
+      user,
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 
-export { login, register, getScore, updateScore, updateUser };
+const topUser = async (req, res) => {
+  try {
+    let user = await User.find();
+    user.sort((a, b) => b.score - a.score);
+    let topTen = user.slice(0,10);
+    res.json({ success: true, user: topTen });
+  } catch (error) {
+    console.log(error.message);
+    res.json({
+      success: false,
+      message: "Server Not Responding..",
+    });
+  }
+};
+
+export { login, register, getScore, updateScore, updateUser, topUser };

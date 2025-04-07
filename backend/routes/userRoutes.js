@@ -4,6 +4,7 @@ import {
   getScore,
   login,
   register,
+  topUser,
   updateScore,
   updateUser,
 } from "../controllers/userController.js";
@@ -18,5 +19,6 @@ userRouter.post("/score", updateScore);
 userRouter.get("/score", getScore);
 userRouter.post("/verify", userAuth);
 userRouter.post("/update", updateUser);
+userRouter.get("/top-player",topUser)
 
 export default userRouter;

@@ -10,7 +10,7 @@ import OtherProducts from "../components/OtherProducts";
 function Home() {
   return (
     <>
-      <section className="container mx-auto px-4 py-20 flex flex-col md:flex-row items-center">
+      <section className="container mx-auto px-4 py-5 md:py-20 flex flex-col md:flex-row items-center">
         <div className="md:w-1/2 mb-10 md:mb-0">
           <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
             Get Ready for the <span className="text-indigo-300">Flash</span>{" "}
@@ -44,7 +44,7 @@ function Home() {
       </section>
 
       {/* Features */}
-      <section className="bg-black bg-opacity-50 py-20">
+      <section className="bg-black bg-opacity-50 py-5 md:py-20">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-16">
             Game Features
@@ -74,13 +74,13 @@ function Home() {
                 <div className="relative">
                   <div className="relative bg-gradient-to-r from-gray-600 to-gray-950 text-white px-4 py-1 rounded-lg border border-gray-400 shadow-lg transform -rotate-12">
                     <span className="text-sm font-bold tracking-wider uppercase">
-                      Coming Soon
+                      New Mode
                     </span>
                   </div>
                 </div>
               </div>
               <Hourglass className="h-12 w-12 text-indigo-300 mb-4" />
-              <h3 className="text-xl font-bold mb-2">Timed Gameplay</h3>
+              <h3 className="text-xl font-bold mb-2">Blitz Mode</h3>
               <p className="text-gray-300">
                 Race against the clock to complete each sequence before time
                 runs out.
@@ -102,7 +102,7 @@ function Home() {
       <OtherProducts />
 
       {/* Call to Action */}
-      <section className="bg-gradient-to-r from-gray-900 to-gray-950 py-16">
+      <section className="bg-gradient-to-r from-gray-900 to-gray-950 py-10 md:py-20">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">
             Ready to Begin Your Adventure?

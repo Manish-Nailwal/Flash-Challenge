@@ -1,5 +1,6 @@
-import { Telescope, BrainCircuit, Zap, Target } from "lucide-react";
+import { Telescope, BrainCircuit, Zap, Target, ArrowRight } from "lucide-react";
 import OtherProducts from "../../components/OtherProducts";
+import { Link } from "react-router-dom";
 function About() {
   return (
     <>
@@ -66,63 +67,47 @@ function About() {
           </div>
         </div>
 
-        {/* How To Play */}
-
-        {/* <div className="bg-gray-950">
+        {/* Explore More Section */}
+        <div className="bg-gray-950">
           <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-            <div className="flex flex-col items-center justify-center">
-              <h2 className="text-2xl font-extrabold text-white sm:text-4xl">
-                Learn to Play
-              </h2>
-              <div className="flex flex-row mt-8">
-                  <div className="border p-11 rounded-lg">Hello</div>
-                  <div className="">
-                    <img src="" alt="" />
-                  </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-8">
+                <h3 className="text-2xl font-bold text-white mb-4">
+                  Discover Our Features
+                </h3>
+                <p className="text-purple-100 mb-6">
+                  Explore our comprehensive suite of features designed to
+                  enhance your gaming experience. From tournament tools to
+                  community features, we've got everything you need.
+                </p>
+                <Link
+                  to="/features"
+                  className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700"
+                >
+                  Explore Features
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-8">
+                <h3 className="text-2xl font-bold text-white mb-4">
+                  Join Our Community
+                </h3>
+                <p className="text-purple-100 mb-6">
+                  Connect with thousands of gamers worldwide. Share experiences,
+                  participate in events, and make new friends who share your
+                  passion for gaming.
+                </p>
+                <Link
+                  to="/community"
+                  className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700"
+                >
+                  Join Community
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
               </div>
             </div>
           </div>
-        </div> */}
-
-        
-        {/* Our Story */}
-        {/* <div className="bg-gray-800">
-          <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-            <div className="lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
-              <div>
-                <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
-                  Our Story
-                </h2>
-                <p className="mt-3 max-w-3xl text-lg text-gray-400">
-                  GameZone started as a passion project by a group of gaming
-                  enthusiasts who wanted to create a space where gamers could
-                  connect, share experiences, and discover new games.
-                </p>
-                <p className="mt-3 max-w-3xl text-lg text-gray-400">
-                  What began as a small blog has evolved into a thriving
-                  community with thousands of members worldwide. We've hosted
-                  tournaments, game jams, and charity events that have raised
-                  over $500,000 for various causes.
-                </p>
-                <p className="mt-3 max-w-3xl text-lg text-gray-400">
-                  Today, we continue to grow and evolve, always staying true to
-                  our core mission: bringing gamers together and celebrating the
-                  art and joy of gaming.
-                </p>
-              </div>
-              <div className="mt-8 lg:mt-0">
-                <div className="relative rounded-lg overflow-hidden">
-                  <img
-                    className="w-full"
-                    src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?ixlib=rb-1.2.1&auto=format&fit=crop&w=2850&q=80"
-                    alt="Team working together"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> */}
-
+        </div>
         <OtherProducts />
       </div>
     </>

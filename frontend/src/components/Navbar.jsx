@@ -19,9 +19,6 @@ function Navbar() {
       navigate("/login");
     }
   };
-  const inform = () => {
-    toast.info("Coming in the next release!");
-  };
 
   return (
     <>
@@ -44,18 +41,18 @@ function Navbar() {
           >
             About
           </NavLink>
-          <button
-            onClick={inform}
+          <NavLink
+            to={"/features"}
             className="hover:text-indigo-300 transition-colors"
           >
             Features
-          </button>
-          <button
-            onClick={inform}
+          </NavLink>
+          <NavLink
+            to={"/community"}
             className="hover:text-indigo-300 transition-colors"
           >
             Community
-          </button>
+          </NavLink>
         </div>
         <div className="flex flex-row items-center">
           <button className=" hover:bg-gray-900 px-5 py-2 rounded-full font-medium transition-colors">

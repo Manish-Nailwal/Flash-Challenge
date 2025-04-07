@@ -1,4 +1,4 @@
-import { createContext, use, useState } from "react";
+import { createContext, useState } from "react";
 
 export const AuthContext = createContext();
 
@@ -16,6 +16,7 @@ function AuthContextProvider(props) {
   ]);
   const [quest, setQuest] = useState([]);
   const [key, setKey] = useState(0);
+  const [gameMode, setGameMode] = useState("default");
 
   const value = {
     token,
@@ -32,6 +33,8 @@ function AuthContextProvider(props) {
     setQuest,
     key,
     setKey,
+    gameMode,
+    setGameMode,
   };
 
   return (

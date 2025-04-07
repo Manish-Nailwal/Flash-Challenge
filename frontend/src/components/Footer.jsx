@@ -1,10 +1,6 @@
 import { Gamepad2, Github, Twitter, Instagram, Linkedin } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
-import { toast } from "react-toastify";
 function Footer() {
-  const inform = () => {
-    toast.info("Coming in the next release!");
-  };
   return (
     <>
       <footer className="bg-gray-950 py-12">
@@ -63,12 +59,12 @@ function Footer() {
                     </NavLink>
                   </li>
                   <li>
-                    <button
-                      onClick={inform}
+                    <NavLink
+                      to={"/community"}
                       className="hover:text-white transition-colors"
                     >
                       Community
-                    </button>
+                    </NavLink>
                   </li>
                   <li>
                     <NavLink

@@ -8,13 +8,32 @@ import {
   Save,
   Target,
   LogIn,
+  Check,
+  X,
 } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
-import { fetchUserData, handleInputChange, handleSubmit, logout, setEditFn } from "../util/authUtil";
+import {
+  fetchUserData,
+  handleInputChange,
+  handleSubmit,
+  logout,
+  setEditFn,
+} from "../util/authUtil";
+import axios from "axios";
+import { backend } from "../App";
 
 function Account() {
   const [isEditing, setIsEditing] = useState(false);
-  const { setToken, setUser, user, setHighScore, setKey, setQuestProgress, setClaimReward } = useContext(AuthContext);
+  const [showAvatarSelector, setShowAvatarSelector] = useState(false);
+  const {
+    setToken,
+    setUser,
+    user,
+    setHighScore,
+    setKey,
+    setQuestProgress,
+    setClaimReward,
+  } = useContext(AuthContext);
   const [formData, setFormData] = useState({
     name: "User Name",
     email: "user@example.com",
@@ -25,11 +44,25 @@ function Account() {
       "https://res.cloudinary.com/dojqjc99q/image/upload/v1741285039/FlashGame_DEV/avatars/g0ek3r5sld6uwl1pxowt.png",
   });
   const [tempFormData, setTempFormData] = useState({});
+  const [avatarOptions, setAvatarOptions] = useState([]);
+
+  const handleAvatarSelect = (avatarUrl) => {
+    setFormData((prev) => ({
+      ...prev,
+      avatar: avatarUrl,
+    }));
+    setShowAvatarSelector(false);
+  };
 
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchUserData(setUser, setFormData, navigate);
+    const updateAvatar = async () => {
+      const response = await axios.get(`${backend}/api/avatars`);
+      setAvatarOptions(response.data);
+    };
+    updateAvatar();
   }, []);
 
   return (
@@ -39,7 +72,8 @@ function Account() {
           {/* Header */}
           <div className="relative h-28 bg-gradient-to-r from-gray-950 to-gray-800">
             <div className="absolute -bottom-12 left-8">
-              <div className="relative">
+              <div className="relative"
+              onClick={isEditing?() => setShowAvatarSelector(true):null}>
                 <img
                   src={formData.avatar}
                   alt="Profile"
@@ -54,19 +88,78 @@ function Account() {
             </div>
           </div>
 
+          {/* Avatar Selector Modal */}
+          {showAvatarSelector && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Choose Profile Picture
+                  </h3>
+                  <button
+                    onClick={() => setShowAvatarSelector(false)}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  {avatarOptions.map((avatar, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleAvatarSelect(avatar.url)}
+                      className="relative aspect-square overflow-hidden rounded-lg hover:ring-2 hover:ring-indigo-500 focus:outline-none"
+                    >
+                      <img
+                        src={avatar.url}
+                        alt={`Avatar option ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                      {formData.avatar === avatar.url && (
+                        <div className="absolute inset-0 bg-indigo-500 bg-opacity-20 flex items-center justify-center">
+                          <div className="bg-white rounded-full p-1">
+                            <Check className="w-5 h-5 text-indigo-600" />
+                          </div>
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Content */}
           <div className="pt-16 px-8 pb-8">
             <div className="flex justify-between items-start md:items-center mb-8">
               <h1 className="text-3xl font-bold text-white">{formData.name}</h1>
               <div className="m-0 p-0 flex flex-col md:flex-row items-center justify-end">
                 <button
-                  onClick={() => setEditFn(tempFormData, setTempFormData, formData, setFormData, isEditing, setIsEditing)}
+                  onClick={() =>
+                    setEditFn(
+                      tempFormData,
+                      setTempFormData,
+                      formData,
+                      setFormData,
+                      isEditing,
+                      setIsEditing
+                    )
+                  }
                   className="w-20 px-4 my-2 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   {isEditing ? "Cancel" : "Edit"}
                 </button>
                 <button
-                  onClick={() => logout(setQuestProgress, setClaimReward, setKey, setToken, setHighScore, navigate)}
+                  onClick={() =>
+                    logout(
+                      setQuestProgress,
+                      setClaimReward,
+                      setKey,
+                      setToken,
+                      setHighScore,
+                      navigate
+                    )
+                  }
                   className="md:ms-5 my-2 px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   {localStorage.getItem("token") != "" ? "LogOut" : "LogIn"}
@@ -74,7 +167,20 @@ function Account() {
               </div>
             </div>
 
-            <form onSubmit={(e)=>handleSubmit(e,setIsEditing, isEditing, formData, tempFormData, user, setUser)} className="space-y-6">
+            <form
+              onSubmit={(e) =>
+                handleSubmit(
+                  e,
+                  setIsEditing,
+                  isEditing,
+                  formData,
+                  tempFormData,
+                  user,
+                  setUser
+                )
+              }
+              className="space-y-6"
+            >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Basic Information */}
                 <div className="space-y-4">

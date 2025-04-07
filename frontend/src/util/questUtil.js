@@ -33,9 +33,8 @@ const updateProgress = async (
 };
 
 const dailyReset = async (user, setUser) => {
-  const userId = user._id;
-  let response = await axios.put(`${backend}/api/quest/reset`, {
-    userId,
+  const response = await axios.post(`${backend}/api/user/verify`, {
+    token: localStorage.getItem("token"),
   });
   let tempUser = response.data.user;
   setUser(tempUser);

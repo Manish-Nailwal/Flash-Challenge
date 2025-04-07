@@ -55,7 +55,9 @@ export const checkBtnFn = (
   quest,
   currScore,
   questProgress,
-  setQuestProgress
+  setQuestProgress,
+  setIsRunning,
+  isRunning
 ) => {
   if (currQueue[idx] === userQueue[idx]) {
     if (currQueue.length === userQueue.length) {
@@ -64,8 +66,9 @@ export const checkBtnFn = (
   } else {
     setCurrQueue([]);
     checkProgressFn(quest, currScore, questProgress, setQuestProgress);
+    isRunning ? setIsRunning(false):null;
     setGameStatus(false);
-    if (highScore < currLvl) {
+    if (highScore < currLvl && currLvl!==1) {
       toast.info("New high score! Log in or register to save it.");
     } else {
       toast.error("Game Over!!");
