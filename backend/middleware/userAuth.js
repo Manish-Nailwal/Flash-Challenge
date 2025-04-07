@@ -18,6 +18,8 @@ const userAuth = async (req, res) => {
         message: "Invalid Token!!",
       });
     }
+    user.resetDaily();
+    await user.save();
     res.json({
       success: true,
       user,

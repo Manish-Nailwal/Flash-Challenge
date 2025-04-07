@@ -6,6 +6,7 @@ import connectCloudinary from "./config/cloudinary.js";
 import userRouter from "./routes/userRoutes.js";
 import newsRouter from "./routes/newsRoute.js";
 import questRouter from "./routes/questRoute.js";
+import avatarRouter from "./routes/avatarRoute.js";
 
 // App Config
 const app = express();
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 app.use('/api/user',userRouter);
 app.use('/api/news',newsRouter);
 app.use('/api/quest',questRouter);
+app.use('/api/avatars', avatarRouter);
 
 app.listen(port, () => {
   console.log("listening at port: " + port);
