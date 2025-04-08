@@ -8,7 +8,7 @@ Flash Challenge is a fast-paced, memory-based game designed to test your reflexe
 
 👉 [Play Now on Netlify](https://flash-challenge.netlify.app/)
 
-📂 [GitHub Repository](https://github.com)
+📂 [GitHub Repository](https://github.com/Manish-Nailwal/Flash-Challenge/)
 
 ---
 
